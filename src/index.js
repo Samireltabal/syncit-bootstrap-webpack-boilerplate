@@ -14,6 +14,9 @@ $(document).ready(function(){
     $('#action_menu_btn').click(function(){
         $('.action_menu').toggle();
     });
+    $('#action_menu_btn_2').click(function(){
+      $('.action_menu_2').toggle();
+  });
 });
 const queryString = window.location.search;
 const urlParams = new URLSearchParams(queryString);

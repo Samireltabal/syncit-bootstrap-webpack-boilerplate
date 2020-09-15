@@ -191,7 +191,7 @@ font-size: 10px;
 .msg_head{
 position: relative;
 }
-#action_menu_btn{
+#action_menu_btn , #action_menu_btn_2 {
 position: absolute;
 right: 10px;
 top: 10px;
@@ -199,7 +199,7 @@ color: white;
 cursor: pointer;
 font-size: 20px;
 }
-.action_menu{
+.action_menu , .action_menu_2{
 z-index: 1;
 position: absolute;
 padding: 15px 0;
@@ -210,21 +210,21 @@ top: 30px;
 right: 15px;
 display: none;
 }
-.action_menu ul{
+.action_menu ul , .action_menu_2 ul{
 list-style: none;
 padding: 0;
 margin: 0;
 }
-.action_menu ul li{
+.action_menu ul li, .action_menu_2 ul li{
 width: 100%;
 padding: 10px 15px;
 margin-bottom: 5px;
 }
-.action_menu ul li i{
+.action_menu ul li i, .action_menu_2 ul li i{
 padding-right: 10px;
 
 }
-.action_menu ul li:hover{
+.action_menu ul li:hover , .action_menu_2 ul li:hover{
 cursor: pointer;
 background-color: rgba(0,0,0,0.2);
 }
