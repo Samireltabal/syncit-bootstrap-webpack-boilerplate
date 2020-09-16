@@ -10,7 +10,7 @@ require('popper.js');
 import './index.css';
 import { ping } from './js/app';
 import { mqttInit } from './js/mqtt';
-import { initWebRTCAdaptor, switchAudioMode, switchVideoMode, startPublishing, stopPublishing } from './js/stream'
+import { initWebRTCAdaptor, switchAudioMode, switchVideoMode, startPublishing, stopPublishing, toggle_camera, toggle_audio } from './js/stream'
 
 
 const queryString = window.location.search;
@@ -48,6 +48,12 @@ $(document).ready(function(){
     })
     $('#stop_publish_button').on('click', function () {
         stopPublishing();
+    })
+    $('#camera_toggle').on('click', function () {
+        toggle_camera();
+    })
+    $('#audio_toggle').on('click', function () {
+        toggle_audio();
     })
 });
 function beep() {

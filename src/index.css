@@ -133,6 +133,12 @@ border:1.5px solid white;
 .offline{
 background-color: #c23616 !important;
 }
+.device-offline > span > i {
+  color: #c23616 !important; 
+}
+.device-online > span > i {
+  color: #27ae60 !important; 
+}
 .user_info{
 margin-top: auto;
 margin-bottom: auto;

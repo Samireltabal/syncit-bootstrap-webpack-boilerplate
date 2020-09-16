@@ -21,9 +21,62 @@ var mediaConstraints = {
 
 var isMicMuted = false;
 var isCameraOff = false;
-
+var camera_button = $('#camera_toggle');
+var audio_button = $('#audio_toggle');
 export function toggle_camera() {
+    if(isCameraOff)  {
+        $(camera_button).addClass('device-online');
+        $(camera_button).removeClass('device-offline');
+        turnOnLocalCamera();
+    } else { 
+        $(camera_button).addClass('device-offline');
+        $(camera_button).removeClass('device-online');
+        turnOffLocalCamera();
+    }
+}
+export function toggle_audio() {
+    if(isMicMuted)  {
+        $(audio_button).addClass('device-online');
+        $(audio_button).removeClass('device-offline');
+        unmuteLocalMic();
+    } else { 
+        $(audio_button).addClass('device-offline');
+        $(audio_button).removeClass('device-online');
+        muteLocalMic();
+    }
+}
+function turnOffLocalCamera() {
+    webRTCAdaptor.turnOffLocalCamera();
+    isCameraOff = true;
+    sendNotificationEvent("CAM_TURNED_OFF");
+}
 
+function turnOnLocalCamera() {
+    webRTCAdaptor.turnOnLocalCamera();
+    isCameraOff = false;
+    sendNotificationEvent("CAM_TURNED_ON");
+}
+
+function muteLocalMic(){
+    webRTCAdaptor.muteLocalMic();
+    isMicMuted = true;
+    sendNotificationEvent("MIC_MUTED");
+}
+
+function unmuteLocalMic() {
+    webRTCAdaptor.unmuteLocalMic();
+    isMicMuted = false;
+    sendNotificationEvent("MIC_UNMUTED");
+}
+
+function sendNotificationEvent(eventType) {
+    if(isDataChannelOpen) {
+        var notEvent = { streamId: classId, eventType:eventType };
+
+        webRTCAdaptor.sendData(classId, JSON.stringify(notEvent));
+    }    else {
+        console.log("Could not send the notification because data channel is not open.");
+    }
 }
 export function startPublishing(classId, token = '12345678') {
     webRTCAdaptor.publish(classId, token);
@@ -74,7 +127,7 @@ function checkAndRepublishIfRequired() {
 }
 
 function startAnimation() {
-
+       $("#broadcastingInfo").removeClass('badge-danger').addClass('badge-success')
     $("#broadcastingInfo").fadeIn(800, function () {
       $("#broadcastingInfo").fadeOut(800, function () {
             var state = webRTCAdaptor.signallingState(streamId);
@@ -87,8 +140,8 @@ function startAnimation() {
       });
     });
   }
-
-  var rtmpForward = true;
+var isDataChannelOpen = false;
+var rtmpForward = true;
 var appName = "/FutureLines/";
 var path =  "stream.futurelines.live" + ":5080" + appName + "websocket?rtmpForward=" + rtmpForward;
 var websocketURL =  "ws://" + path;
@@ -115,6 +168,7 @@ export function initWebRTCAdaptor(publishImmediately, autoRepublishEnabled) {
         bandwidth:900,
         callback : function(info, obj) {
             if (info == "initialized") {
+                isDataChannelOpen = true;
                 console.log("initialized");
                 start_publish_button.disabled = false;
                 stop_publish_button.disabled = true;
@@ -154,6 +208,7 @@ export function initWebRTCAdaptor(publishImmediately, autoRepublishEnabled) {
             else if (info == "closed") {
                 //console.log("Connection closed");
                 if (typeof obj != "undefined") {
+                    isDataChannelOpen = false
                     console.log("Connecton closed: " + JSON.stringify(obj));
                 }
             }
@@ -176,6 +231,26 @@ export function initWebRTCAdaptor(publishImmediately, autoRepublishEnabled) {
                         + " Current outgoing bitrate: " + obj.currentOutgoingBitrate + " kbits/sec");
 
             }
+            else if (info == "data_channel_opened") {
+
+                 console.log("data channel is open");
+
+             }
+             else if (info == "data_received") {
+
+                 console.log("Message received ", description.event.data );
+
+                 handleData(description);
+             }
+
+             else if (info == "data_channel_error") {
+
+                 handleError(description);
+
+             } else if (info == "data_channel_closed") {
+
+                 console.log("Data channel closed " );
+             }
             else if (info == "data_received") {
                 console.log("Data received: " + obj.event.data + " type: " + obj.event.type + " for stream: " + obj.streamId);
                 chats.push(obj);
