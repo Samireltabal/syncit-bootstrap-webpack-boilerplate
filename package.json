@@ -20,7 +20,7 @@
     "mqtt": "^4.2.1",
     "path": "^0.12.7",
     "popper.js": "^1.16.1",
-    "postcss-loader": "^4.0.1",
+    "postcss-loader": "^4.0.2",
     "sass": "^1.26.10",
     "sass-loader": "^10.0.2",
     "script-loader": "^0.7.2",

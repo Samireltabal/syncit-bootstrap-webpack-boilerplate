@@ -23,11 +23,12 @@
 								</div>
 								<div class="user_info">
 									<span>البث المباشر</span>
-									<p>stream state</p>
+									<p id="broadcastingInfo">مباشر</p>
 								</div>
 								<div class="video_cam">
-									<span class="text-red"><i class="fas fa-video success"></i></span>
-									<span><i class="fas fa-microphone-slash"></i></span>
+									<button class="btn btn-text text-white" id="camera_toggle"><span  title="الكاميرا"><i class="fas fa-video"></i></span></button>
+									<span title="صوت المايك"><i class="fas fa-microphone-slash"></i></span>
+									<span title="رفع اليد"><i class="fas fa-fist-raised"></i></span>
 								</div>
 							</div>
 							<span id="action_menu_btn"><i class="fas fa-ellipsis-v"></i></span>
@@ -41,35 +42,32 @@
 							</div>
 						</div>
 						<div class="card-body msg_card_body">
-							<video id="localVideo"  autoplay muted controls playsinline></video>
+							<video id="localVideo"  autoplay muted controls playsinline width="100%" ></video>
+							<div class="clearfix"></div>
+							<div class="form-group col-sm-12 text-left options">
+								
+								<legend class="col-form-label video-source-legend text-white">مصدر الصوره</legend>
+								<div class="form-check form-check-inline">	
+									<select class="custom-select custom-select-xs mb-3 video-source" id="videoSource">
+										<option id="screenOption" value="screen">الشاشة</option>
+										<option value="screen+camera">الشاشه + الكاميرا</option>
+									</select>
+								</div>
+								<p id="browser_screen_share_doesnt_support" class="text-white">المتصفح لا يدعم عرض الشاشه</p>				
+									<legend class="col-form-label audio-source-legend">مصدر الصوت</legend>				
+									<select class="custom-select custom-select-xs mb-3 audio-source" id="audioSource">
+										
+									</select>
+								</div>
+								<div class="form-group">	
+									<button onclick="startPublishing()" class="btn btn-success" disabled
+									id="start_publish_button">ابدأ البث</button>
+									<button onclick="stopPublishing()" class="btn btn-danger" disabled
+									id="stop_publish_button">انهي البث</button>
+								</div>
 						</div>
 						<div class="card-footer">
-							<div class="form-group col-sm-12 text-left options">
-							<legend class="col-form-label video-source-legend text-white">مصدر الصوره</legend>
-							<div class="form-check form-check-inline">	
-								<input class="form-check-input video-source" disabled name="videoSource" onchange="switchVideoMode(event.target)" type="radio" value="screen" 
-								id="screen_share_checkbox">
-								<label class="form-check-label" for="screen_share_checkbox" class="text-white" style="font-weight:normal">
-										الشاشه
-								</label>
-							</div>
-							<div class="form-check form-check-inline">
-								<input class="form-check-input video-source" disabled name="videoSource" onchange="switchVideoMode(event.target)" type="radio" value="screen+camera" 
-									id="screen_share_with_camera_checkbox">
-								<label class="form-check-label" for="screen_share_with_camera_checkbox" class="text-white" style="font-weight:normal">
-										الشاشه مع الكاميرا
-								</label>
-								<p id="browser_screen_share_doesnt_support" class="text-white">المتصفح لا يدعم عرض الشاشه</p>
-
-								</div>				
-								<legend class="col-form-label audio-source-legend">مصدر الصوت</legend>				
-							</div>
-							<div class="form-group">	
-								<button onclick="startPublishing()" class="btn btn-primary" disabled
-								id="start_publish_button">Start Publishing</button>
-								<button onclick="stopPublishing()" class="btn btn-primary" disabled
-								id="stop_publish_button">Stop Publishing</button>
-							</div>			
+									
 						</div>
 					</div>
 				</div>
@@ -243,6 +241,12 @@
 			</div>
     </div>
     <embed src="success.wav" autostart="false" width="0" height="0" id="sound1" enablejavascript="true">
-    <script type="module" src="/bundle.js"></script>
+	<script type="module" src="/bundle.js"></script>
+	<footer class="footer text-center">
+		<p><a href="http://synciteg.com">SYNCIT Smart Solutions</a></p>
+	</footer>
+	<script>
+		
+	</script>
 	</body>
 </html>

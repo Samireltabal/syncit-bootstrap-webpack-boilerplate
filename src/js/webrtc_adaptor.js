@@ -4,8 +4,11 @@
  */
 
 "use strict";
-
-function WebRTCAdaptor(initialValues)
+var mediaConstraints = {
+	video : true,
+	audio : true
+};
+export function WebRTCAdaptor(initialValues)
 {
 
 	class PeerStats {

@@ -9,18 +9,10 @@ import boostrap from 'bootstrap';
 require('popper.js');
 import './index.css';
 import { ping } from './js/app';
-import { WebRTCAdaptor } from './js/webrtc_adaptor';
 import { mqttInit } from './js/mqtt';
+import { initWebRTCAdaptor, switchAudioMode, switchVideoMode, startPublishing, stopPublishing } from './js/stream'
 
-$(document).ready(function(){
-    $('#action_menu_btn').click(function(){
-        $('.action_menu').toggle();
-    });
-    $('#action_menu_btn_2').click(function(){
-        $('.action_menu_2').toggle();
-    });
 
-});
 const queryString = window.location.search;
 const urlParams = new URLSearchParams(queryString);
 const classId = urlParams.get('classId')
@@ -35,8 +27,30 @@ var config = {
   'token': apiToken,
   'classId': classId
 };
+
+mqttInit(config);
+initWebRTCAdaptor(false, true);
+$(document).ready(function(){
+    $('#action_menu_btn').click(function(){
+        $('.action_menu').toggle();
+    });
+    $('#action_menu_btn_2').click(function(){
+        $('.action_menu_2').toggle();
+    });
+    $('#videoSource').on('change', function() {
+        switchVideoMode(this.value)
+    });
+    $('#audiSource').on('change', function() {
+        switchAudioMode(this.value)
+    });
+    $('#start_publish_button').on('click', function () {
+        startPublishing(classId);
+    })
+    $('#stop_publish_button').on('click', function () {
+        stopPublishing();
+    })
+});
 function beep() {
     var snd = new Audio("./success.wav");  
     snd.play();
 }
-mqttInit(config);
