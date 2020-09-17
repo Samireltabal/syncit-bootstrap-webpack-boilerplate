@@ -46,7 +46,6 @@
 							<video id="localVideo"  autoplay muted controls playsinline width="100%" ></video>
 							<div class="clearfix"></div>
 							<div class="form-group col-sm-12 text-left options">
-								
 								<legend class="col-form-label video-source-legend text-white">مصدر الصوره</legend>
 								<div class="form-check form-check-inline">	
 									<select class="custom-select custom-select-xs mb-3 video-source" id="videoSource">
@@ -55,17 +54,18 @@
 									</select>
 								</div>
 								<p id="browser_screen_share_doesnt_support" class="text-white">المتصفح لا يدعم عرض الشاشه</p>				
-									<legend class="col-form-label audio-source-legend">مصدر الصوت</legend>				
-									<select class="custom-select custom-select-xs mb-3 audio-source" id="audioSource">
-										
+								<legend class="col-form-label audio-source-legend">مصدر الصوت</legend>				
+								<div class="form-check form-check-inline">	
+									<select class="custom-select custom-select-xs mb-3 audio-source" id="audioSource">	
 									</select>
 								</div>
-								<div class="form-group">	
-									<button onclick="startPublishing()" class="btn btn-success" disabled
-									id="start_publish_button">ابدأ البث</button>
-									<button onclick="stopPublishing()" class="btn btn-danger" disabled
-									id="stop_publish_button">انهي البث</button>
-								</div>
+							</div>
+							<div class="form-group">	
+								<button onclick="startPublishing()" class="btn btn-success" disabled
+								id="start_publish_button">ابدأ البث</button>
+								<button onclick="stopPublishing()" class="btn btn-danger" disabled
+								id="stop_publish_button">انهي البث</button>
+							</div>
 						</div>
 						<div class="card-footer">
 									

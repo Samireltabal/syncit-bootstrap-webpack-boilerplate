@@ -1,19 +1,16 @@
 var mqtt = require('mqtt')
 export function mqttInit (config) {
   var client  = mqtt.connect('wss://connect.futurelines.net:8084/mqtt', {
-    clientId: 'fromExternalFile_',
+    clientId: config['user']['email'],
     keepalive: 60,
-    clean: false,
+    clean: true,
     username: config['user']['email'],
     password: config['token']
 });
 client.on('connect', function () {
-    client.subscribe('presence', function (err) {
-      if (!err) {
-        client.publish('presence', 'Hello mqtt')
-      }
-    })
-    client.subscribe('/class/' + config['classId'])
+    client.subscribe('/class/' + config['classId']);
+    client.subscribe('/class/' + config['classId'] + "/chat");
+    client.subscribe('/class/' + config['classId'] + "/orders/" + config['classId']);
   })
   
   client.on('message', function (topic, message) {
