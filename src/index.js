@@ -6,31 +6,76 @@
 
 import $ from 'jquery';
 import boostrap from 'bootstrap';
+import moment from 'moment';
 require('popper.js');
 import './index.css';
 import { ping } from './js/app';
 import { mqttInit } from './js/mqtt';
-import { initWebRTCAdaptor, switchAudioMode, switchVideoMode, startPublishing, stopPublishing, toggle_camera, toggle_audio } from './js/stream'
-
+import { initWebRTCAdaptor, switchAudioMode, switchVideoMode, startPublishing, stopPublishing, toggle_camera, toggle_audio, getStreamState } from './js/stream'
+import { initClass, fetchStudents, fetchInfo, fetchChat } from './js/axios';
+import axios from 'axios';
 
 const queryString = window.location.search;
 const urlParams = new URLSearchParams(queryString);
 const classId = urlParams.get('classId')
 const apiToken = urlParams.get('token')
-function PlaySuccess() {
-    $('#sound1').play();
-}
-var config = {
-  'user' : {
-    email: 'admin@example.com'
-  },
-  'token': apiToken,
-  'classId': classId
-};
+var User;
 
-mqttInit(config);
-initWebRTCAdaptor(false, true);
+initClass(apiToken).then((response) => {
+    User = response.data
+    localStorage.setItem('user', JSON.stringify(response.data));
+    fetchStudents(apiToken, classId);
+    $('#userName').text(response.data.name);
+    initWebRTCAdaptor(false, true);
+    fetchChat(apiToken, classId, User);
+    mqttInit(apiToken,classId, User);
+    handleForm();
+});
+
+function handleForm (){
+    $('#attachButton').click(function(){ $('#fileForm').trigger('click'); });
+    $('#fileForm').on('change', function(e) {
+        $('#fileName').text(e.target.files[0].name);
+    });
+    $('#sendChat').on('click', function() {
+        const headers = {
+            'Content-Type': 'multipart/form-data',
+            'Authorization': apiToken
+        }
+        var data = new FormData();
+        data.append('content', $('#chatMessage').val());
+        data.append('stream_id', classId);
+        data.append('file', $('input#fileForm')[0].files[0]);
+
+        axios.post('https://api.futurelines.net/api/v2/class/chat/add', data, {headers: headers}).then((response) => {
+            fetchChat(apiToken, classId, User).then(() =>{
+                $('#chatMessage').val('')
+                $('input#fileForm').val('')
+            })
+        }).catch((err) => {
+
+        })
+    })
+}
+
+setInterval(() => {
+    if(getStreamState(classId)) {
+        fetchInfo(apiToken, classId).then((response) => {
+            $('#viewers').text(response.data.webRTCViewerCount);
+            $('#speed').text(parseFloat(response.data.speed).toFixed(2) + ' X');
+            $('#start').text(moment(moment(response.data.startTime).format('YYYYMMDDkkmmss'), 'YYYYMMDDkkmmss').fromNow());
+        });
+    } else {
+        $('#viewers').text('N/A');
+        $('#speed').text('N/A');
+        $('#start').text('N/A');
+    }
+}, 30000);
+
 $(document).ready(function(){
+    $('#testJquery').on('click', function () {
+        $('#remoteVideo').slideToggle();
+    });
     $('#action_menu_btn').click(function(){
         $('.action_menu').toggle();
     });
@@ -56,7 +101,4 @@ $(document).ready(function(){
         toggle_audio();
     })
 });
-function beep() {
-    var snd = new Audio("./success.wav");  
-    snd.play();
-}
+

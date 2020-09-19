@@ -125,20 +125,34 @@ function checkAndRepublishIfRequired() {
          initWebRTCAdaptor(true, autoRepublishEnabled);
      }
 }
-
-function startAnimation() {
-       $("#broadcastingInfo").removeClass('badge-danger').addClass('badge-success')
-    $("#broadcastingInfo").fadeIn(800, function () {
-      $("#broadcastingInfo").fadeOut(800, function () {
-            var state = webRTCAdaptor.signallingState(streamId);
-        if (state != null && state != "closed") {
-            var iceState = webRTCAdaptor.iceConnectionState(streamId);
-            if (iceState != null && iceState != "failed" && iceState != "disconnected") {
-                  startAnimation();
+export function getStreamState(streamId) {
+    var state = webRTCAdaptor.signallingState(streamId);
+    var iceState = webRTCAdaptor.iceConnectionState(streamId);
+    if (iceState != null && iceState != "failed" && iceState != "disconnected" && state != null && state != "closed") {
+        return true;
+    } else {
+        return false;
+    }
+}
+function startAnimation(value, state) {
+    $('#broadcastingInfo').text(value)
+    if( state === 'SUCCESS') {
+        $("#broadcastingInfo").removeClass('badge-danger').addClass('badge-success')
+        $("#broadcastingInfo").fadeIn(800, function () {
+          $("#broadcastingInfo").fadeOut(800, function () {
+                var state = webRTCAdaptor.signallingState(streamId);
+            if (state != null && state != "closed") {
+                var iceState = webRTCAdaptor.iceConnectionState(streamId);
+                if (iceState != null && iceState != "failed" && iceState != "disconnected") {
+                      startAnimation('مباشر', 'SUCCESS');
+                }
             }
-        }
-      });
-    });
+          });
+        });   
+    } else {
+        $('#broadcastingInfo').removeClass('badge-success').addClass('badge-danger');
+        $('#broadcastingInfo').show();
+    }
   }
 var isDataChannelOpen = false;
 var rtmpForward = true;
@@ -173,14 +187,14 @@ export function initWebRTCAdaptor(publishImmediately, autoRepublishEnabled) {
                 start_publish_button.disabled = false;
                 stop_publish_button.disabled = true;
                 if (publishImmediately) {
-                    webRTCAdaptor.publish(streamId, token)
+                    webRTCAdaptor.publish(streamId, null)
                 }
             } else if (info == "publish_started") {
                 //stream is being published
                 console.log("publish started");
                 start_publish_button.disabled = true;
                 stop_publish_button.disabled = false;
-                startAnimation();
+                startAnimation('مباشر','SUCCESS');
                 if (autoRepublishEnabled && autoRepublishIntervalJob == null) 
                 {
                     autoRepublishIntervalJob = setInterval(() => {
@@ -191,6 +205,7 @@ export function initWebRTCAdaptor(publishImmediately, autoRepublishEnabled) {
             } else if (info == "publish_finished") {
                 //stream is being finished
                 console.log("publish finished");
+                startAnimation('انهيت البث','failed');
                 start_publish_button.disabled = false;
                 stop_publish_button.disabled = true;
             }
@@ -211,6 +226,8 @@ export function initWebRTCAdaptor(publishImmediately, autoRepublishEnabled) {
                     isDataChannelOpen = false
                     console.log("Connecton closed: " + JSON.stringify(obj));
                 }
+                startAnimation('راجع الانترنت','failed');
+                checkAndRepublishIfRequired();
             }
             else if (info == "pong") {
                 //ping/pong message are sent to and received from server to make the connection alive all the time
@@ -248,7 +265,9 @@ export function initWebRTCAdaptor(publishImmediately, autoRepublishEnabled) {
                  handleError(description);
 
              } else if (info == "data_channel_closed") {
-
+                startAnimation('راجع الانترنت','failed'); 
+                checkAndRepublishIfRequired();
+                 initWebRTCAdaptor(true, true);
                  console.log("Data channel closed " );
              }
             else if (info == "data_received") {
@@ -268,11 +287,11 @@ export function initWebRTCAdaptor(publishImmediately, autoRepublishEnabled) {
                         audioHtmlContent += getAudioRadioButton(device.label, device.deviceId);
                     }
                 }); 
-                $(videoHtmlContent).insertBefore("#screenOption");
-                $("#videoSource").first().prop("selected");	
+                $(videoHtmlContent).prependTo("#videoSource");
+                $("#videoSource").find('option:eq(0)').prop('selected', true);
                 
                 $(audioHtmlContent).prependTo("#audioSource");
-                $(".audio-source").first().prop("checked", true);	
+                $(".audio-source").find('option:eq(0)').prop("selected", true);	
             }
             else {
                 console.log( info + " notification received");
@@ -304,9 +323,10 @@ export function initWebRTCAdaptor(publishImmediately, autoRepublishEnabled) {
             }
             else if (error.indexOf("ScreenSharePermissionDenied") != -1) {
                 errorMessage = "You are not allowed to access screen share";
-                $(".video-source").first().prop("checked", true);						
+                $("#videoSource").find('option:eq(0)').prop('selected', true);
             }
             else if (error.indexOf("WebSocketNotConnected") != -1) {
+                initWebRTCAdaptor(true, true);
                 errorMessage = "WebSocket Connection is disconnected.";
             }
             alert(errorMessage);

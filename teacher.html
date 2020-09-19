@@ -17,19 +17,13 @@
 					<div class="card">
 						<div class="card-header msg_head">
 							<div class="d-flex bd-highlight">
-								<div class="img_cont">
-									<img src="https://static.turbosquid.com/Preview/001292/481/WV/_D.jpg" class="rounded-circle user_img">
-									<span class="online_icon"></span>
-								</div>
 								<div class="user_info">
 									<span>البث المباشر</span>
 									<div class="clearfix"></div>
-									<p id="broadcastingInfo" class="badge badge-pill badge-danger">مباشر</p>
 								</div>
 								<div class="video_cam">
 									<button class="btn btn-text device-online" id="camera_toggle"><span title="الكاميرا"><i class="fas fa-video"></i></span></button>
 									<button class="btn btn-text device-online" id="audio_toggle"><span title="صوت المايك"><i class="fas fa-microphone"></i></span></button>
-									<span title="رفع اليد"><i class="fas fa-fist-raised"></i></span>
 								</div>
 							</div>
 							<span id="action_menu_btn"><i class="fas fa-ellipsis-v"></i></span>
@@ -78,60 +72,32 @@
             الطلاب
 					</div>
 					<div class="card-body contacts_body">
-						<ui class="contacts">
-						<li class="active">
-							<div class="d-flex bd-highlight">
-								<div class="img_cont">
-									<span class="online_icon"></span>
-								</div>
-								<div class="user_info">
-									<span>خالد محمد</span>
-								</div>
-							</div>
-						</li>
-						<li>
-							<div class="d-flex bd-highlight">
-								<div class="img_cont">
-									<span class="online_icon offline"></span>
-								</div>
-								<div class="user_info">
-									<span>Taherah Big</span>
-								</div>
-							</div>
-						</li>
-						<li>
-							<div class="d-flex bd-highlight">
-								<div class="img_cont">
-									<span class="online_icon"></span>
-								</div>
-								<div class="user_info">
-									<span>Sami Rafi</span>
-								</div>
-							</div>
-						</li>
-						<li>
-							<div class="d-flex bd-highlight">
-								<div class="img_cont">
-									<span class="online_icon offline"></span>
-								</div>
-								<div class="user_info">
-									<span>Nargis Hawa</span>
-								</div>
-							</div>
-						</li>
-						<li>
-							<div class="d-flex bd-highlight">
-								<div class="img_cont">
-									<span class="online_icon offline"></span>
-								</div>
-								<div class="user_info">
-									<span>Rashid Samim</span>
-								</div>
-							</div>
-						</li>
+						<ui class="contacts" id="students">
+						
 						</ui>
 					</div>
-					<div class="card-footer"></div>
+					<div class="card-footer">
+						<ul class="list-group list-group-flush">
+							<li class="list-group-item d-flex justify-content-between align-items-center">
+							  المشاهدين
+							  <span id="viewers" class="badge badge-primary badge-pill">N/A</span>
+							</li>
+							<li class="list-group-item d-flex justify-content-between align-items-center">
+							  السرعه
+							  <span id="speed" class="badge badge-primary badge-pill">N/A</span>
+							</li>
+							<li class="list-group-item d-flex justify-content-center align-items-center">
+								بدأ منذ
+							</li>
+							<li class="list-group-item d-flex justify-content-center align-items-center">
+								<span id="start" class="badge badge-primary badge-pill">N/A</span>
+							</li>
+							<li class="list-group-item d-flex justify-content-between align-items-center">
+							  الحاله
+							  <span id="broadcastingInfo" class="badge badge-pill badge-danger">مباشر</span>
+							</li>
+						  </ul>
+					</div>
 				</div>
 			</div>
 				<div class="col-md-4 col-xl-4 chat mb-3">
@@ -140,11 +106,11 @@
 							<div class="d-flex bd-highlight">
 								<div class="img_cont">
 									<img src="https://static.turbosquid.com/Preview/001292/481/WV/_D.jpg" class="rounded-circle user_img">
-									<span class="online_icon"></span>
+									<span id="connectStatus" class="online_icon offline"></span>
 								</div>
 								<div class="user_info">
-									<span>Chat with Khalid</span>
-									<p>1767 Messages</p>
+									<span>مرحباً </span>
+									<p id="userName"></p>
 								</div>
 								<div class="video_cam">
 									<span><i class="fas fa-video"></i></span>
@@ -161,87 +127,36 @@
 								</ul>
 							</div>
 						</div>
-						<div class="card-body msg_card_body">
-							<div class="d-flex justify-content-start mb-4">
-								<div class="img_cont_msg">
-									<img src="https://static.turbosquid.com/Preview/001292/481/WV/_D.jpg" class="rounded-circle user_img_msg">
-								</div>
-								<div class="msg_cotainer">
-									Hi, how are you samim?
-									<span class="msg_time">8:40 AM, Today</span>
-								</div>
+						<div class="card-header msg_head">
+							<div id="remoteStream" class="d-flex bd-highlight">
+								<video id="remoteVideo"  autoplay muted controls playsinline width="100%" style="display: none;"></video>
 							</div>
-							<div class="d-flex justify-content-end mb-4">
-								<div class="msg_cotainer_send">
-									Hi Khalid i am good tnx how about you?
-									<span class="msg_time_send">8:55 AM, Today</span>
-								</div>
-								<div class="img_cont_msg">
-							<img src="https://static.turbosquid.com/Preview/001292/481/WV/_D.jpg" class="rounded-circle user_img_msg">
-								</div>
-							</div>
-							<div class="d-flex justify-content-start mb-4">
-								<div class="img_cont_msg">
-									<img src="https://static.turbosquid.com/Preview/001292/481/WV/_D.jpg" class="rounded-circle user_img_msg">
-								</div>
-								<div class="msg_cotainer">
-									I am good too, thank you for your chat template
-									<span class="msg_time">9:00 AM, Today</span>
-								</div>
-							</div>
-							<div class="d-flex justify-content-end mb-4">
-								<div class="msg_cotainer_send">
-									You are welcome
-									<span class="msg_time_send">9:05 AM, Today</span>
-								</div>
-								<div class="img_cont_msg">
-							<img src="https://static.turbosquid.com/Preview/001292/481/WV/_D.jpg" class="rounded-circle user_img_msg">
-								</div>
-							</div>
-							<div class="d-flex justify-content-start mb-4">
-								<div class="img_cont_msg">
-									<img src="https://static.turbosquid.com/Preview/001292/481/WV/_D.jpg" class="rounded-circle user_img_msg">
-								</div>
-								<div class="msg_cotainer">
-									I am looking for your next templates
-									<span class="msg_time">9:07 AM, Today</span>
-								</div>
-							</div>
-							<div class="d-flex justify-content-end mb-4">
-								<div class="msg_cotainer_send">
-									Ok, thank you have a good day
-									<span class="msg_time_send">9:10 AM, Today</span>
-								</div>
-								<div class="img_cont_msg">
-						<img src="https://static.turbosquid.com/Preview/001292/481/WV/_D.jpg" class="rounded-circle user_img_msg">
-								</div>
-							</div>
-							<div class="d-flex justify-content-start mb-4">
-								<div class="img_cont_msg">
-									<img src="https://static.turbosquid.com/Preview/001292/481/WV/_D.jpg" class="rounded-circle user_img_msg">
-								</div>
-								<div class="msg_cotainer">
-									Bye, see you
-									<span class="msg_time">9:12 AM, Today</span>
+							<button id="testJquery">Show / Hide</button>
+						</div>
+						<div id="chatbox" class="card-body msg_card_body">	
+							<div class="d-flex justify-content-center mb-4">
+								<div class="msg_cotainer_info">
+									لقد دخلت البث
 								</div>
 							</div>
 						</div>
 						<div class="card-footer">
 							<div class="input-group">
 								<div class="input-group-append">
-									<span class="input-group-text attach_btn"><i class="fas fa-paperclip"></i></span>
+									<input ref="file" id="fileForm" name="file" type="file" class="d-none"/>
+									<span id="attachButton" class="input-group-text attach_btn"><i class="fas fa-paperclip"></i></span>
 								</div>
-								<textarea name="" class="form-control type_msg" placeholder="Type your message..."></textarea>
+								<textarea id="chatMessage" class="form-control type_msg" placeholder="Type your message..."></textarea>
 								<div class="input-group-append">
-									<button id="jqueryTest" class="input-group-text send_btn"><i class="fas fa-location-arrow"></i></button>
+									<button id="sendChat" class="input-group-text send_btn"><i class="fas fa-location-arrow"></i></button>
 								</div>
 							</div>
+							<p id="fileName" class="badge badge-bill badge-info text-center"></p>
 						</div>
 					</div>
 				</div>
 			</div>
     </div>
-    <embed src="success.wav" autostart="false" width="0" height="0" id="sound1" enablejavascript="true">
 	<script type="module" src="/bundle.js"></script>
 	<footer class="footer text-center">
 		<p><a href="http://synciteg.com">SYNCIT Smart Solutions</a></p>
