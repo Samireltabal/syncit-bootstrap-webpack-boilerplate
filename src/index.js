@@ -24,7 +24,13 @@ var User;
 initClass(apiToken).then((response) => {
     User = response.data
     localStorage.setItem('user', JSON.stringify(response.data));
-    fetchStudents(apiToken, classId);
+    fetchStudents(apiToken, classId).then(() => {
+        $(document).ready( function () {
+            document.getElementsByClassName('StudentItem').on('click', function (event) {
+                window.alert(event.id);
+            });
+        });
+    });
     $('#userName').text(response.data.name);
     initWebRTCAdaptor(false, true);
     fetchChat(apiToken, classId, User);
@@ -99,6 +105,6 @@ $(document).ready(function(){
     })
     $('#audio_toggle').on('click', function () {
         toggle_audio();
-    })
+    });
 });
 

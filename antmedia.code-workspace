@@ -1,0 +1,12 @@
+{
+	"folders": [
+		{
+			"name": "antmedia — (Remote)",
+			"uri": "sftp://futurelinesstream/"
+		},
+		{
+			"path": "."
+		}
+	],
+	"settings": {}
+}

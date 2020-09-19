@@ -34,11 +34,33 @@ export async function fetchStudents(token, classId) {
                 var paid = student.student[0].paid ? 'd-flex' : 'd-none';
                 if(key == 0) {
                     list.html(`
-                        <li id="StudentItem" class="${uuid} ${paid}"><div class="bd-highlight d-flex"><div class="img_cont"><div class="user_info"><span><i class="fas fa-fist-raised text-white" id="${uuid}"></i></span></div><span class="online_icon ${state}"></span></div><div class="user_info"><span>${student.name}</span></div></div></li>
+                        <li id="${uuid}" class="StudentItem ${uuid} ${paid}">
+                            <div class="bd-highlight d-flex">
+                                <div class="img_cont">
+                                    <div class="user_info">
+                                        <span><i class="fas fa-fist-raised text-white" id="${uuid}"></i></span>
+                                    </div><span class="online_icon ${state}"></span>
+                                </div>
+                                <div class="user_info">
+                                    <span>${student.name}</span>
+                                </div>
+                            </div>
+                        </li>
                     `);
                 } else {
                     list.append(`
-                    <li id="StudentItem" class="${uuid} ${paid}"><div class="bd-highlight d-flex"><div class="img_cont"><div class="user_info"><span><i class="fas fa-fist-raised text-white" id="${uuid}"></i></span></div><span class="online_icon ${state}"></span></div><div class="user_info"><span>${student.name}</span></div></div></li>
+                        <li id="${uuid}" class="StudentItem ${uuid} ${paid}">
+                            <div class="bd-highlight d-flex">
+                                <div class="img_cont">
+                                    <div class="user_info">
+                                        <span><i class="fas fa-fist-raised text-white" id="${uuid}"></i></span>
+                                    </div><span class="online_icon ${state}"></span>
+                                </div>
+                                <div class="user_info">
+                                    <span>${student.name}</span>
+                                </div>
+                            </div>
+                        </li>
                     `);
                 }
             });
@@ -46,10 +68,7 @@ export async function fetchStudents(token, classId) {
     }).catch((error) => {
         window.location.replace('https://futurelines.net/');
     })
-}
-function allowMic (uuid) {
-    console.log(uuid);
-}
+};
 export async function fetchChat(token ,classId, CurrentUser) {
     var url = 'https://api.futurelines.net/api/v2/class/chat/get/' + classId;
     await axios.get(url, {

@@ -40,19 +40,25 @@
 							<video id="localVideo"  autoplay muted controls playsinline width="100%" ></video>
 							<div class="clearfix"></div>
 							<div class="form-group col-sm-12 text-left options">
-								<legend class="col-form-label video-source-legend text-white">مصدر الصوره</legend>
-								<div class="form-check form-check-inline">	
-									<select class="custom-select custom-select-xs mb-3 video-source" id="videoSource">
-										<option id="screenOption" value="screen">الشاشة</option>
-										<option value="screen+camera">الشاشه + الكاميرا</option>
-									</select>
+								<div class="row">
+								<div class="col-sm-6">
+									<legend class="col-form-label video-source-legend text-white">مصدر الصوره</legend>
+									<div class="form-check form-check-inline">	
+										<select class="custom-select custom-select-xs mb-3 video-source" id="videoSource">
+											<option id="screenOption" value="screen">الشاشة</option>
+											<option value="screen+camera">الشاشه + الكاميرا</option>
+										</select>
+									</div>
+									<p id="browser_screen_share_doesnt_support" class="text-white">المتصفح لا يدعم عرض الشاشه</p>
 								</div>
-								<p id="browser_screen_share_doesnt_support" class="text-white">المتصفح لا يدعم عرض الشاشه</p>				
-								<legend class="col-form-label audio-source-legend">مصدر الصوت</legend>				
-								<div class="form-check form-check-inline">	
-									<select class="custom-select custom-select-xs mb-3 audio-source" id="audioSource">	
-									</select>
+								<div class="col-sm-6">
+									<legend class="col-form-label audio-source-legend">مصدر الصوت</legend>				
+									<div class="form-check form-check-inline">	
+										<select class="custom-select custom-select-xs mb-3 audio-source" id="audioSource">	
+										</select>
+									</div>
 								</div>
+							</div>
 							</div>
 							<div class="form-group">	
 								<button onclick="startPublishing()" class="btn btn-success" disabled
@@ -131,7 +137,6 @@
 							<div id="remoteStream" class="d-flex bd-highlight">
 								<video id="remoteVideo"  autoplay muted controls playsinline width="100%" style="display: none;"></video>
 							</div>
-							<button id="testJquery">Show / Hide</button>
 						</div>
 						<div id="chatbox" class="card-body msg_card_body">	
 							<div class="d-flex justify-content-center mb-4">
