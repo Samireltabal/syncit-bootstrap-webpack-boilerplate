@@ -263,6 +263,7 @@ export function initWebRTCAdaptor(publishImmediately, autoRepublishEnabled) {
              else if (info == "data_channel_error") {
 
                  handleError(description);
+                 initWebRTCAdaptor(true, true);
 
              } else if (info == "data_channel_closed") {
                 startAnimation('راجع الانترنت','failed'); 

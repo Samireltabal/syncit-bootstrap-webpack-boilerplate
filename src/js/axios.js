@@ -68,7 +68,7 @@ export async function fetchStudents(token, classId) {
         });
     }).catch((error) => {
         console.log(error)
-        window.location.replace('https://futurelines.net/');
+        //window.location.replace('https://futurelines.net/');
     })
 };
 export async function fetchChat(token ,classId, CurrentUser) {
