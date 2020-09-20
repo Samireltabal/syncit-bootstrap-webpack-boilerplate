@@ -11,7 +11,7 @@ require('popper.js');
 import './index.css';
 import { ping } from './js/app';
 import { mqttInit } from './js/mqtt';
-import { initWebRTCAdaptor, joinRoom, switchAudioMode, switchVideoMode, startPublishing, stopPublishing, toggle_camera, toggle_audio, getStreamState, sendMessage } from './js/stream'
+import { initWebRTCAdaptor, switchAudioMode, switchVideoMode, startPublishing, stopPublishing, toggle_camera, toggle_audio, getStreamState, sendMessage } from './js/stream'
 import { initClass, fetchStudents, fetchInfo, fetchChat } from './js/axios';
 import axios from 'axios';
 
@@ -32,13 +32,6 @@ initClass(apiToken).then((response) => {
                     allowUser(element.id);
                 });
             }
-            $('#denyAll').on('click', function() {
-                var obj = {
-                    remoteStream: null,
-                    order: "DENY_ALL"
-                }
-                Client.publish('/class/' + classId + "/orders", JSON.stringify(obj));
-            });
         });
     });
     $('#userName').text(response.data.name);
@@ -75,22 +68,15 @@ function handleForm (){
 }
 
 function allowUser(id) {
-    setTimeout(() => {
-        var obj = {
-            remoteStream: `${id}`,
-            order: "ALLOW_STREAM"
-        }
-        Client.publish('/class/' + classId + "/orders", JSON.stringify(obj));
-    }, 1500);
     var obj = {
-        remoteStream: null,
-        order: "DENY_ALL"
+        remoteStream: `${id}`,
+        order: "ALLOW_STREAM"
     }
     Client.publish('/class/' + classId + "/orders", JSON.stringify(obj));
 }
 function denyUser(id) {
     var obj = {
-        remoteStream: id,
+        userId: id,
         order: 'DENY_STREAM'
     }
     Client.publish('/class/' + classId + "/orders", JSON.parse(obj));
@@ -126,7 +112,7 @@ $(document).ready(function(){
         switchAudioMode(this.value)
     });
     $('#start_publish_button').on('click', function () {
-        startPublishing(classId, null);
+        startPublishing(classId);
     })
     $('#stop_publish_button').on('click', function () {
         stopPublishing();
@@ -137,14 +123,5 @@ $(document).ready(function(){
     $('#audio_toggle').on('click', function () {
         toggle_audio();
     });
-    $('#refreshStudents').on('click', function () {
-        fetchStudents(apiToken, classId)
-    });
-    $('#closeRoom').on('click', function () {
-        var obj = {
-            order: 'CLOSE_ROOM'
-        }
-        Client.publish('/class/' + classId + "/orders", JSON.stringify(obj));
-    })
 });
 

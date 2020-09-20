@@ -155,6 +155,10 @@ color: white;
 font-size: 10px;
 color: rgba(255,255,255,0.6);
 }
+#streamerName {
+  display:block;
+  color: white;
+}
 .video_cam{
 margin-left: 50px;
 margin-top: 5px;

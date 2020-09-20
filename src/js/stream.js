@@ -156,9 +156,9 @@ function startAnimation(value, state) {
   }
 var isDataChannelOpen = false;
 var rtmpForward = true;
-var appName = "/FutureLines/";
-var path =  "stream.futurelines.live" + ":5080" + appName + "websocket?rtmpForward=" + rtmpForward;
-var websocketURL =  "ws://" + path;
+var appName = "/WebRTCAppEE/";
+var path =  "stream.futurelines.live" + ":5443" + appName + "websocket?rtmpForward=" + rtmpForward;
+var websocketURL =  "wss://" + path;
 if (location.protocol.startsWith("https")) {
 	websocketURL = "wss://" + path;
 }

@@ -2,7 +2,7 @@ var mqtt = require('mqtt')
 import $ from 'jquery';
 import moment from 'moment';
 import { beep, raise } from './notifications';
-import { startPublishing, stopPublishing } from './stream';
+var _ = require('underscore');
 export function mqttInit (token, classId, User) {
   var client  = mqtt.connect('wss://connect.futurelines.net:8084/mqtt', {
     clientId: User.email,
@@ -25,9 +25,11 @@ client.on('connect', function () {
   function sendMessage() {
     client.publish('/class/' + classId + "/chat", 'this is message');
   }
-$("#jqueryTest").on('click', function () {
-    sendMessage();
-})
+  $("#jqueryTest").on('click', function () {
+      sendMessage();
+  })
+
+  return client;
 }
 
 function messageHandler(topic, message) {
@@ -41,13 +43,31 @@ function messageHandler(topic, message) {
       if(obj.order === "LOWER_HAND") {
         handLowered(obj);
       }
-      if(obj.order === "START_STREAM") {
-        // startPublishing(config['classId']);
-        $('#remoteVideo').slideDown();
+      if(obj.order === "ALLOW_STREAM") {
+        var students = JSON.parse(localStorage.getItem('students'));
+        var CurrentUser = JSON.parse(localStorage.getItem('user')).uuid
+        console.log(students);
+        console.log(obj.remoteStream);
+      //   var out = _.filter(students, function(item) {
+      //     return _.findWhere(item.uuid, obj.remoteStream);
+      //  });
+      var out = _.findWhere(students, {uuid: obj.remoteStream})
+       console.log(out);
+       $('#streamerName').text(out.name);
+       if(out.uuid === CurrentUser.uuid) {
+         console.log(local)
+       } else {
+        $('#remoteVideo').html(`
+          <iframe width="100%" height="200" src="https://stream.futurelines.live:5443/WebRTCAppEE/play_embed.html?name=${obj.remoteStream}" frameborder="0" allowfullscreen></iframe>
+        `);
+       }
       }
-      if(obj.order === "END_STREAM") {
-        stopPublishing();
-        $('#remoteVideo').slideUp();
+      if(obj.order === "DENY_ALL") {
+        $('#streamerName').text('');
+        $('#remoteVideo').html('');
+      }
+      if(obj.order === "CLOSE_ROOM") {
+        window.location.replace('https://futurelines.net');
       }
     }
   } else if (topic.includes('class') && topic.includes('chat')) {

@@ -28,6 +28,7 @@ export async function fetchStudents(token, classId) {
         var list = $('#students');
         $(document).ready(function () {
             var studentList = response.data.students
+            localStorage.setItem('students', JSON.stringify(response.data.students));
             studentList.forEach((student, key) => {
                 var state = student.is_online ? '' : 'offline';
                 var uuid = student.uuid;
@@ -64,8 +65,9 @@ export async function fetchStudents(token, classId) {
                     `);
                 }
             });
-        });  
+        });
     }).catch((error) => {
+        console.log(error)
         window.location.replace('https://futurelines.net/');
     })
 };
